@@ -46,7 +46,7 @@ def configure_django():
 
 def configure_app() -> FastAPI:
 
-    app = FastAPI(title='GOLD HAND API', version='0.1.0', description=DESCRIPTION)
+    app = FastAPI(title='GENE API', version='0.1.0', description=DESCRIPTION)
 
     _patch_django_connection(app)
     _add_routers(app)
