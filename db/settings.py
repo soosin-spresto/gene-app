@@ -51,36 +51,36 @@ INSTALLED_APPS = []
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('MYSQL_PROD_DATABASE', 'gold')
-        if ENV == 'prod'
-        else os.getenv('MYSQL_DEV_DATABASE', 'gold')
-        if ENV == 'dev'
-        else 'gold',
-        'USER': os.getenv('MYSQL_USER', 'gold') if ENV != 'local' else 'gold',
-        'PASSWORD': os.getenv('PROD_MYSQL_PASSWORD', 'gold') if ENV != 'local' else 'gold',
-        'HOST': os.getenv('MYSQL_HOST', '127.0.0.1'),
-        'PORT': os.getenv('MYSQL_PORT', 3306),
-        'CONN_MAX_AGE': 600,
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-        },
-    },
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': os.getenv('MYSQL_PROD_DATABASE', 'gold')
+#         if ENV == 'prod'
+#         else os.getenv('MYSQL_DEV_DATABASE', 'gold')
+#         if ENV == 'dev'
+#         else 'gold',
+#         'USER': os.getenv('MYSQL_USER', 'gold') if ENV != 'local' else 'gold',
+#         'PASSWORD': os.getenv('PROD_MYSQL_PASSWORD', 'gold') if ENV != 'local' else 'gold',
+#         'HOST': os.getenv('MYSQL_HOST', '127.0.0.1'),
+#         'PORT': os.getenv('MYSQL_PORT', 3306),
+#         'CONN_MAX_AGE': 600,
+#         'OPTIONS': {
+#             'charset': 'utf8mb4',
+#         },
+#     },
+# }
 
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": REDIS_URL,
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
-        "TIMEOUT": 5,
-    }
-}
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": REDIS_URL,
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         },
+#         "TIMEOUT": 5,
+#     }
+# }
 
 
 # Internationalization

@@ -139,7 +139,7 @@ def _add_exception_handlers(app):
 
 
 def _add_routers(app):
-    from api.routers import health, video, callback, file
+    from api.routers import health, file
 
     router = app
 
