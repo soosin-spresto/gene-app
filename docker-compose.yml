@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  gene-app:
+    build: .
+    image: gene
+    container_name: gene
+    # depends_on:
+    #   - gene-db
+    volumes:
+      - .:/gene-app
+      # - ~/.aws/:/root/.aws:ro #aws 자격증명 도커 내부 적용
+    entrypoint: # 개발용. (Dockerfile의 entrypoint를 오버라이드)
+      - uvicorn
+      - --reload
+      - --host=0.0.0.0
+      - api.main:app
+    environment:
+      - LOG_LEVEL=DEBUG
+      - DEBUG=1
+    ports:
+      - 8003:8000

@@ -1,0 +1,6 @@
+[report]
+;추상메소드는 주석 테스트 커버리지에서 제외
+exclude_lines =
+    @abstractmethod
+    @abc.abstractmethod
+    pragma: no cover

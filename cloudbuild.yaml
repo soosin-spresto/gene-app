@@ -1,0 +1,66 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - "-c"
+      - >-
+        docker pull $_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:latest
+        || exit 0
+    id: Fetch
+    entrypoint: bash
+
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - "-t"
+      - "$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA"
+      - "-t"
+      - "$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:latest"
+      - "--cache-from"
+      - "$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:latest"
+      - .
+      - "-f"
+      - Dockerfile
+    id: Build
+
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - "$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA"
+    id: Push
+
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - "$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:latest"
+    id: PushLatest
+
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
+    args:
+      - run
+      - services
+      - update
+      - $_SERVICE_NAME
+      - "--platform=managed"
+      - "--image=$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA"
+      - >-
+        --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID
+      - "--region=$_DEPLOY_REGION"
+      - "--quiet"
+    id: Deploy
+    entrypoint: gcloud
+
+images:
+  - "$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA"
+
+options:
+  substitutionOption: ALLOW_LOOSE
+substitutions:
+  _TRIGGER_ID: 4daad1c3-7477-45e0-aa43-4b5e56c0044f
+  _SERVICE_NAME: goldhand
+  _DEPLOY_REGION: us-central1
+  _GCR_HOSTNAME: us.gcr.io
+  _PLATFORM: managed
+tags:
+  - gcp-cloud-build-deploy-cloud-run
+  - gcp-cloud-build-deploy-cloud-run-managed
+  - goldhand

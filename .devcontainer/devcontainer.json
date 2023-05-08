@@ -1,0 +1,54 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.245.0/containers/docker-existing-docker-compose
+// If you want to run as a non-root user in the container, see .devcontainer/docker-compose.yml.
+{
+  "service": "gene-app",
+  "name": "Existing Docker Compose (Extend)",
+  // Update the ‘dockerComposeFile’ list if you have more compose files or use different names.
+  // The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.
+  "dockerComposeFile": ["../docker-compose.yml"],
+  // The ‘service’ property is the name of the service for the container that VS Code should
+  // use. Update this value and .devcontainer/docker-compose.yml to the real service name.
+  // The optional ‘workspaceFolder’ property is the path VS Code should open by default when
+  // connected. This is typically a file mount in .devcontainer/docker-compose.yml
+  "workspaceFolder": "/gene-app",
+  // Use ‘forwardPorts’ to make a list of ports inside the container available locally.
+  "forwardPorts": [8001],
+  // Uncomment the next line if you want start specific services in your Docker Compose config.
+  // "runServices": [],
+  // Uncomment the next line if you want to keep your containers running after VS Code shuts down.
+  // "shutdownAction": "none",
+  // Uncomment the next line to run commands after the container is created - for example installing curl.
+  "customizations": {
+    // https://code.visualstudio.com/docs/remote/containers-tutorial#_devcontainerjson
+    "vscode": {
+      "settings": {
+        "editor.rename.enablePreview": false,
+        "editor.formatOnSave": true,
+        "files.autoSave": "afterDelay",
+        "workbench.startupEditor": "none",
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.black-formatter",
+          "editor.formatOnSave": true
+        },
+        "workbench.editor.enablePreview": false
+      },
+      "extensions": [
+        "ms-python.vscode-pylance",
+        "ms-python.python",
+        "naumovs.color-highlight",
+        "YoshinoriN.current-file-path",
+        "donjayamanne.githistory",
+        "eamodio.gitlens",
+        "ms-python.black-formatter",
+        "GitHub.copilot"
+      ]
+    }
+  },
+  "postCreateCommand": "apt-get update && apt-get install -y curl"
+
+  // "postCreateCommand": "uvicorn --reload --host=0.0.0.0 api.main:app"
+  // "postCreateCommand": "gunicorn -c gunicorn_conf.py api.main:app"
+  // Uncomment to connect as a non-root user if you’ve added one. See https://aka.ms/vscode-remote/containers/non-root.
+  // "remoteUser": "vscode"
+}
